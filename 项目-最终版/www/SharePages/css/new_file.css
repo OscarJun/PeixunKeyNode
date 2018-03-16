@@ -1,0 +1,41 @@
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0; } 
+body, button, input, select, textarea { font:12px/1.5tahoma, arial, \5b8b\4f53;   font-family: "PingFang";} 
+h1, h2, h3, h4, h5, h6{ font-size:100%; } 
+address, cite, dfn, em, var { font-style:normal; } 
+code, kbd, pre, samp { font-family:couriernew, courier, monospace; } 
+small{ font-size:12px; } 
+ul, ol { list-style:none; } 
+a { text-decoration:none; } 
+a:hover { text-decoration:underline; } 
+sup { vertical-align:text-top; } 
+sub{ vertical-align:text-bottom; } 
+legend { color:#000; } 
+fieldset, img { border:0; } 
+button, input, select, textarea { font-size:100%; } 
+table { border-collapse:collapse; border-spacing:0; } 
+.main{
+	height: auto;
+	width: 100%;
+	position: absolute;
+	background: white;
+}
+.main>div{
+	position: relative;
+	width: 100%;
+}
+.floor1{
+	background: url(../img/bg1.png);
+	background-size:100% 100%;
+}
+.floor2{
+	background: url(../img/bg2.png);
+	background-size:100% 100%;
+}
+.floor3{
+	background: url(../img/bg3.png);
+	background-size:100% 100%;
+}
+.floor4{
+	background: url(../img/bg4.png);
+	background-size:100% 100%;
+}

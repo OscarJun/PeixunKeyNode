@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/new_file.css"/>
+	</head>
+	<style>
+		body{
+			background: rgb(243,243,243);
+		}
+		.logheader{
+			width: 100%;
+			position: relative;
+			height: 80px;
+			line-height: 80px;
+			text-align: center;
+			color: white;
+			background: rgb(244,67,54);
+			font-size: 20px;
+		}
+		.lognotice{
+			width: 100%;
+			position: relative;
+			height: 90px;
+			line-height: 90px;
+			text-align: center;
+			color: black;
+			font-size: 18px;
+		}
+		.logbody{
+			width: 100%;
+			position: relative;
+			height: 243px;
+			line-height: 80px;
+			font-size: 18px;
+			background: white;
+		}
+		.logbody>div{
+			width: 90%;
+			position: relative;
+			height: 80px;
+			font-size: 18px;
+			left: 5%;
+			border-bottom: 1px solid rgb(241,241,241);
+		}
+		.logbody>div>input{
+			width: 75%;
+			height: 80px;
+			font-size: 18px;
+			outline: none;
+			border: none;
+			position: absolute;
+			right: 0;
+		}
+		.logbody>div>span:nth-of-type(1){
+			color: rgb(244,67,54);
+		}
+		.logfooter{
+			width: 80%;
+			height: 60px;
+			position: relative;
+			left: 10%;
+			border-radius: 5px;
+			line-height: 60px;
+			text-align: center;
+			color: white;
+			background: rgb(244,67,54);
+			font-size: 20px;
+			margin-top: 30px;
+			cursor: pointer;
+		}
+	</style>
+	<body>
+		<div class="logheader">申 请 试 用</div>
+		<div class="lognotice">请输入您的联系方式，工作人员将尽快与您联系！</div>
+		<div class="logbody">
+			<div><span>* </span><span>姓名</span><input type="text" placeholder="未填写"/></div>
+			<div><span>* </span><span>手机</span><input type="text" placeholder="未填写"/></div>
+			<div><span>* </span><span>学校</span><input type="text" placeholder="未填写"/></div>
+		</div>
+		<div class="logfooter">立即申请</div>
+	</body>
+</html>

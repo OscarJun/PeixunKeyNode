@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+	<link rel="shortcut icon" href="favicon.ICO" type="image/x-icon" />
+	<link rel="stylesheet" type="text/css" href="dialog.css">
+	<title>师培在线</title>
+</head>
+<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	body{
+		background-color: #f3f3f3;
+	}
+	#header{
+		position: fixed;
+		margin: 0;
+		background-color: #f44336;
+		height: 50px;
+		width: 100%;
+		z-index: 10;
+	}
+	#header p{
+		color: #fff;
+		font-size: 16px;
+		line-height: 50px;
+		text-align: center;
+		font-weight: bold;
+	}
+	#main{
+		padding-top: 5px;
+		position: absolute;
+		width: 100%;
+		height: calc(100% - 110px);
+	}
+	#main form{
+		padding: 15px;
+		margin: 50px 0;
+	}
+	#main div p{
+		line-height: 30px;
+		font-size: 16px;
+	}
+	#main div{
+		margin: 0 0 30px 0;
+		/*padding: 0 30px;*/
+		background-color: #fff;
+	}
+	#main div label{
+		line-height: 45px;
+		height: 45px;
+	}
+	input[type="radio"]{
+		display: none;
+		background-color: #fff;
+		width: 20px;
+		height: 20px;
+		margin-right: 10px;
+	}
+	label{
+		font-size: 16px;
+		color:#333;
+		display: block;
+	}
+	label.title{
+		padding-bottom: 30px;
+	}
+	#main div label div.radio{
+		margin: 0;
+		padding: 0;
+		margin-left: 15px;
+		display: inline-block;
+		border-radius: 50%;
+		border: 2px solid #e4e4e4;
+		width: 20px;
+		height: 20px;
+		margin-right: 10px;
+		box-sizing: border-box;
+		/*margin-bottom: 25px;*/
+		position: relative;
+		top:5px;
+		/*background-color: rgb(244,67,54);*/
+	}
+	#main div label div.radio.backColor{
+		background-color: rgb(244,67,54);
+		border: none;
+	}
+	#main div label div.radio div{
+		margin: 0;
+		padding: 0;
+		/*display: inline-block;*/
+		border-radius: 50%;
+		/*border: 2px solid #e4e4e4;*/
+		width: 10px;
+		height: 10px;
+		/*margin-right: 20px;*/
+		left: 5px;
+		top: 5px;
+		position: relative;
+	}
+	#main div div.line{
+		height: 1px;
+		background-color: #ececec;
+		margin: 0;
+		padding: 0;
+	}
+	#main .leaveSpace{
+		height: 0px;
+		margin-bottom: 45px;
+		bottom: 0;
+		background-color: none;
+	}
+	#footer{
+		position: fixed;
+		/*display: block;*/
+		/*position: absolute;*/
+		background-color: #f44336;
+		width: 100%;
+		height: 45px;
+		bottom: 0
+	}
+	#footer p{
+		color: #fff;
+		font-size: 16px;
+		line-height: 40px;
+		text-align:center;
+	}
+</style>
+<body>
+	<div class="darkbox" style="display: none;">
+		<div class="adAlert" onClick="ApplyTryUse()">
+			<img src="img/AdAlert.png" alt="">
+			<div class="whiteNote">
+				<p>正在生成问卷结果，请稍后……</p>
+				<p><span style="color: #F44336;" class="djs">5S</span>后进入</p>
+			</div>
+		</div>
+	</div>
+		<div id="header">
+			<p>问卷调查详情</p>
+		</div>
+		<div id="main">
+			<div style="margin-top: 120px;background-color: #f3f3f3;">
+				<p>调查问卷内容为空</p>
+			</div>
+			<!-- <div>
+				<p>正文</p>
+			</div>
+			<div>
+				<p>正文</p>
+			</div> -->
+		</div>
+		<div id="footer">
+			<p>提&#X3000;交</p>
+		</div>
+</body>
+<script src="../jQuery/jquery-3.1.0.js"></script>
+<script type="text/javascript" src="js/jquery.dialog.js"></script>
+<script>
+var data = window.location.href.substring(window.location.href.lastIndexOf('?jsonstr=') + 9)
+// console.log(JSON.parse(window.atob(data)).Info.id)
+var Id = JSON.parse(window.atob(data)).Info.id
+// console.log(Id)
+// var httpurl = 'http://139.224.17.12:9800'
+var Data = []
+$.get('/Questionnaires?QuestionnairesId=' + JSON.parse(window.atob(data)).Info.id,function(req){
+	// console.log(req)
+	Data = req.result.data
+	if (req.error == 1) {
+		// console.log('----')
+		$('#main').html('<div style="top:0;right:0;bottom:0;left:0;position:absolute;margin:auto;"><p style="top:0;right:0;bottom:0;left:0;position:absolute;margin:auto;display:block;width:100%;height:30px;text-align:center;">' + req.result.msg + '</p></div>')
+		$('#footer').css({display:'none'})
+	} else {
+		// console.log(req.result.QuesTitle)
+		$('#header').html('<p>' + req.result.QuesTitle + '</p>')
+		var str = '<form>'
+		for (var i = 0; i < req.result.data.length; i++) {
+			// console.log(req.result.data[i])
+			str += '<label class="Title">' + req.result.data[i].Index + '.<span>' + req.result.data[i].Title + '</span></label><br/><div>'
+			str += '<label class="' + req.result.data[i].Id +'" onclick = "ChooseOption(this)">' + '<div class="radio"><div class="center"></div></div><input type="radio" name="' + req.result.data[i].Id +'" value="A" /><span>' + req.result.data[i].OptionsA + '</span></label>'
+			str += '<div class="line"></div><label class="' + req.result.data[i].Id +'" onclick = "ChooseOption(this)">' + '<div class="radio"><div class="center"></div></div><input type="radio" name="' + req.result.data[i].Id +'" value="B" /><span>' + req.result.data[i].OptionsB + '</span></label>'
+			if (req.result.data[i].OptionsC) {
+				str += '<div class="line"></div><label class="' + req.result.data[i].Id +'" onclick = "ChooseOption(this)">' + '<div class="radio"><div class="center"></div></div><input type="radio" name="' + req.result.data[i].Id +'" value="C" /><span>' + req.result.data[i].OptionsC + '</span></label>'
+			}
+			if (req.result.data[i].OptionsD) {
+				str += '<div class="line"></div><label class="' + req.result.data[i].Id +'" onclick = "ChooseOption(this)">' + '<div class="radio"><div class="center"></div></div><input type="radio" name="' + req.result.data[i].Id +'" value="D" /><span>' + req.result.data[i].OptionsD + '</span></label>'
+			}
+			str += '</div>'
+		}
+		str += '<div class="leaveSpace"></div></form>'
+		$('#main').html(str)
+	}
+})
+
+// $(function() {
+	// console.log($('#main div label'))
+	// $('#main div label').click(
+	function ChooseOption(e){
+		// console.log('wwwww')
+		var radioId = $(e);
+		// console.log(radioId)
+		// console.log(radioId[0].className)
+		var divRadio = radioId[0].children[0]
+		// var ClassName = radioId[0].className
+		// console.log(radioId.siblings().children('div'))
+		radioId.siblings().children('div').removeClass('backColor') && $(divRadio).addClass('backColor');
+		// $('input[type="radio"]').removeAttr('backColor') && $(divRadio).attr('backColor', 'backColor');
+	}
+	// );
+// })
+function ApplyTryUse(){
+	location.href = './introduce.html?jsonstr='+window.location.href.substring(window.location.href.lastIndexOf('?jsonstr=') + 9)
+}
+$('#footer').click(function(){
+	// console.log(Data)
+	var Questionnaires = []
+	var result = $('input')
+	for (var i = 0; i < result.length; i++) {
+		if (result[i].checked) {
+			Questionnaires.push({QuestionId:result[i].name,Choose:result[i].value})
+			// checkedOption.push({result[i]})
+			// console.log(Questionnaires)
+		}
+	}
+	if (Questionnaires.length == Data.length) {
+		data = {QuestionnairesId:Id,Questionnaires:Questionnaires}
+		// console.log(data)
+		$.post('/SubmitQuestionnaires',data,function(req){
+			console.log(req)
+			if (req.error) {
+				$('.adAlert>.whiteNote').prepend('<p>' + req.result.msg + '</p>')
+			}
+			$('#footer').css({display:'none'})
+			$('.darkbox').css({'background-color':'rgba(0,0,0,0.6)','width':'100%','height':'100vh','z-index':'99','position':'fixed','display':'block'})
+			$('.adAlert').css({'width':'80vw','margin':'10vh 10vw','line-height':'0'})
+			$('.adAlert>img').css({'width':'100%'})
+			$('.adAlert>.whiteNote').css({'width':'100%','background-color':'white','text-align':'center','font-size':'15px','line-height':'28px','padding':'10px','box-sizing':'border-box'})
+			var countdown = 5;
+			function settime(){
+				if (countdown == 0) {
+					window.location.href = './QuestionnairesReport.html?jsonstr='+window.location.href.substring(window.location.href.lastIndexOf('?jsonstr=') + 9)
+				} else {
+					countdown = countdown-1;
+					$('.djs').text(countdown + 'S')
+					// console.log(countdown)
+				}
+			}
+			setInterval(function(){
+				settime();
+			},1000)
+		})
+	} else {
+		$.dialog.alert({content:'你还有' + (Data.length - Questionnaires.length) + '道题没有选择'});
+	}
+})
+</script>
+</html>
+

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ExamReportforWeb</title>
+</head>
+<body>
+	<div id="app">
+
+	</div>
+</body>
+<script src="./jQuery/jquery-3.1.0.js"></script>
+<script src="./Chart/Chart-1.0.1-beta.4.js"></script>
+<script src="./js/vue.js"></script>
+<script>
+	new Vue({
+		el:'#app',
+		data:{
+			ExamTitle:'',
+			TotalQuesCount:0,
+			Score:0,
+			JudgeCount:0,
+			JudgeScoreValue:0,
+			MultipleCount:0,
+			MultipleScoreValue:0,
+			SingleCount:0,
+			SingleScoreValue:0,
+			QuestionAndOptionData:[]
+		},
+		methods:{
+			a:function(){
+				console.log(this)
+				var _this = this
+				// console.log('aaaaaaa')
+				$.ajax({
+					url:'http://192.168.31.68:8900/api/ExamReportforWeb',
+					data:{ExamId:236},
+					type:'POST',
+					beforeSend: function(req){req.setRequestHeader('token', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVc2VyTmFtZSI6InpoYW5nZ3VveGkyIiwiSWQiOiI3IiwiVXNlclR5cGUiOjB9.aZPHvDANqIRbZwje0hX28xP0Xi88dODnGjhA6zu9jMU')},//'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVc2VyTmFtZSI6IndhbmdzaHVhaSIsIklkIjoiNiIsIlVzZXJUeXBlIjoxfQ.vJQAIcHQhAqs8Lsod8KqdebtpKjgcH98in9uyB6Z9bY')},
+					// eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVc2VyTmFtZSI6InpoYW5nZ3VveGkyIiwiSWQiOiI3IiwiVXNlclR5cGUiOjB9.aZPHvDANqIRbZwje0hX28xP0Xi88dODnGjhA6zu9jMU
+					success:function(req){
+						// console.log('wwwwwww')
+						console.log(req)
+						_this.ExamTitle = req.result.ExamData.Title;
+						_this.TotalQuesCount = req.result.TotalQuesCount;
+						_this.Score = req.result.Score;
+						_this.SingleCount = req.result.ExamData.SingleCount;
+						_this.SingleScoreValue = req.result.ExamData.SingleScoreValue;
+						_this.MultipleCount = req.result.ExamData.MultipleCount;
+						_this.MultipleScoreValue = req.result.ExamData.MultipleScoreValue;
+						_this.JudgeCount = req.result.ExamData.JudgeCount;
+						_this.JudgeScoreValue = req.result.ExamData.JudgeScoreValue;
+						for (var i = 0; i < req.result.QuestionAndOptionData.length; i++) {
+							var QuestionOptiontoMyQuestions = []
+							var TrueAnswer = []
+							for (var j = 0; j < req.result.QuestionAndOptionData[i].data.QuestionOptiontoMyQuestions.length; j++) {
+								if (req.result.QuestionAndOptionData[i].data.QuestionOptiontoMyQuestions[j].IsAnswer) {
+									TrueAnswer.push(j)
+								}
+								var StudentChoosed = false
+								if (req.result.QuestionAndOptionData[i].QuesOption.indexOf(req.result.QuestionAndOptionData[i].data.QuestionOptiontoMyQuestions[j].Id) >= 0) {
+									StudentChoosed = true
+								}
+								QuestionOptiontoMyQuestions.push({Title:req.result.QuestionAndOptionData[i].data.QuestionOptiontoMyQuestions[j].Title,IsAnswer:req.result.QuestionAndOptionData[i].data.QuestionOptiontoMyQuestions[j].IsAnswer,StudentChoosed:StudentChoosed})
+							}
+							_this.QuestionAndOptionData.push({Pattern:req.result.QuestionAndOptionData[i].data.Pattern,QuestionsTitle:req.result.QuestionAndOptionData[i].data.Title,QuestionOptiontoMyQuestions:QuestionOptiontoMyQuestions,TrueAnswer:TrueAnswer})
+						}
+					}
+				})
+			}
+		},
+		created:function(){
+			this.a()
+		}
+	})
+</script>
+</html>

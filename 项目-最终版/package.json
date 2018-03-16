@@ -1,0 +1,34 @@
+{
+  "name": "spzx",
+  "version": "1.0.0",
+  "description": "spzx",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "OscarYu",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "cookie-parser": "^1.4.3",
+    "crypto": "0.0.3",
+    "excel-parser": "^0.2.2",
+    "express": "^4.15.2",
+    "express-anti-leech": "0.0.5",
+    "jwt-simple": "^0.5.1",
+    "moment": "^2.18.1",
+    "mssql": "^4.0.4",
+    "multer": "^1.3.0",
+    "node-msoffice-pdf": "0.0.7",
+    "node-schedule": "^1.2.3",
+    "node-xlrd": "^0.2.4",
+    "office-to-pdf": "^4.0.0",
+    "pdfkit": "^0.8.3",
+    "qr-image": "^3.2.0",
+    "request": "^2.81.0",
+    "sequelize": "^3.30.4",
+    "socket.io": "^2.0.3",
+    "tedious": "^2.0.0",
+    "ws": "^3.0.0"
+  }
+}

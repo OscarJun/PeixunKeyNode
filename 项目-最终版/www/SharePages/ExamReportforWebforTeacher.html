@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ExamReportforWeb</title>
+</head>
+<body>
+	<div id="app">
+	</div>
+		<canvas id="myChart" width="400" height="400"></canvas>
+</body>
+<script src="./jQuery/jquery-3.1.0.js"></script>
+<script src="./Chart/Chart-1.0.1-beta.4.js"></script>
+<script src="../js/vue.js"></script>
+<script>
+	new Vue({
+		el:'#app',
+		data:{
+			ExamTitle:'',
+			SubmitStudNum:0,
+			AllStudNum:0,
+			AverageScore:0,
+			TotalScore:0,
+			JudgeCount:0,
+			JudgeScoreValue:0,
+			MultipleCount:0,
+			MultipleScoreValue:0,
+			SingleCount:0,
+			SingleScoreValue:0,
+			QuestionAndOptionData:[]
+		},
+		methods:{
+			a:function(){
+				console.log(this)
+				var _this = this
+				// console.log('aaaaaaa')
+				$.ajax({
+					url:'http://192.168.31.68:8900/api/ExamReportforWeb',
+					data:{ExamId:236},
+					type:'POST',
+					beforeSend: function(req){req.setRequestHeader('token', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVc2VyTmFtZSI6IndhbmdzaHVhaSIsIklkIjoiNiIsIlVzZXJUeXBlIjoxfQ.vJQAIcHQhAqs8Lsod8KqdebtpKjgcH98in9uyB6Z9bY')},
+					// eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVc2VyTmFtZSI6InpoYW5nZ3VveGkyIiwiSWQiOiI3IiwiVXNlclR5cGUiOjB9.aZPHvDANqIRbZwje0hX28xP0Xi88dODnGjhA6zu9jMU
+					success:function(req){
+						// console.log('wwwwwww')
+						console.log(req)
+						_this.ExamTitle = req.result.ExamData.Title;
+						// _this.TotalQuesCount = req.result.TotalQuesCount;
+						_this.AverageScore = req.result.AverageScore
+						_this.TotalScore = req.result.TotalScore;
+						_this.SubmitStudNum = req.result.SubmitStudNum
+						_this.AllStudNum = req.result.AllStudNum
+						_this.SingleCount = req.result.ExamData.SingleCount;
+						_this.SingleScoreValue = req.result.ExamData.SingleScoreValue;
+						_this.MultipleCount = req.result.ExamData.MultipleCount;
+						_this.MultipleScoreValue = req.result.ExamData.MultipleScoreValue;
+						_this.JudgeCount = req.result.ExamData.JudgeCount;
+						_this.JudgeScoreValue = req.result.ExamData.JudgeScoreValue;
+						for (var i = 0; i < req.result.QuesAccuracy.length; i++) {
+							var QuestionOptiontoMyQuestions = []
+							var TrueAnswer = []
+							for (var j = 0; j < req.result.QuesAccuracy[i].OptionDataArr.length; j++) {
+								if (req.result.QuesAccuracy[i].OptionDataArr[j].IsAnswer) {
+									TrueAnswer.push(j)
+								}
+								QuestionOptiontoMyQuestions.push({Title:req.result.QuesAccuracy[i].OptionDataArr[j].Title,IsAnswer:req.result.QuesAccuracy[i].OptionDataArr[j].IsAnswer})
+							}
+							_this.QuestionAndOptionData.push({Pattern:req.result.QuesAccuracy[i].QuestionData.Pattern,QuestionsTitle:req.result.QuesAccuracy[i].QuestionData.Title,QuestionOptiontoMyQuestions:QuestionOptiontoMyQuestions,ChartArr:req.result.QuesAccuracy[i].ChartArr,Accuracy:req.result.QuesAccuracy[i].Accuracy})
+						}
+					}
+				})
+			}
+		},
+		created:function(){
+			this.a()
+		}
+	})
+	var ctx = document.getElementById("myChart").getContext('2d');
+	console.log(ctx)
+	var myChart = new Chart(ctx, {
+	    type: 'bar',
+	    data: {
+	        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+	        datasets: [{
+	            label: '# of Votes',
+	            data: [12, 19, 3, 5, 2, 3],
+	            backgroundColor: [
+	                'rgba(255, 99, 132, 0.2)',
+	                'rgba(54, 162, 235, 0.2)',
+	                'rgba(255, 206, 86, 0.2)',
+	                'rgba(75, 192, 192, 0.2)',
+	                'rgba(153, 102, 255, 0.2)',
+	                'rgba(255, 159, 64, 0.2)'
+	            ],
+	            borderColor: [
+	                'rgba(255,99,132,1)',
+	                'rgba(54, 162, 235, 1)',
+	                'rgba(255, 206, 86, 1)',
+	                'rgba(75, 192, 192, 1)',
+	                'rgba(153, 102, 255, 1)',
+	                'rgba(255, 159, 64, 1)'
+	            ],
+	            borderWidth: 1
+	        }]
+	    },
+	    options: {
+	        scales: {
+	            yAxes: [{
+	                ticks: {
+	                    beginAtZero:true
+	                }
+	            }]
+	        }
+	    }
+	});
+</script>
+</html>

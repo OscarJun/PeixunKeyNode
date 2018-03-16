@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" id="viewport" content="width=device-width, initial-scale=1">
+	<title>邀请好友</title>
+</head>
+<style>
+	body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td {
+		margin: 0;
+		padding: 0;
+	}
+	body {
+		background: #fff;
+		color: #555;
+		font-size: 14px;
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-family: "微软雅黑";
+	}
+	td,th,caption {
+		font-size: 16px;
+	}
+	h1,h2,h3,h4,h5,h6 {
+		font-weight: normal;
+		font-size: 100%;
+	}
+	address,caption,cite,code,dfn,em,strong,th,var {
+		font-style: normal;
+		font-weight: normal;
+	}
+	a {
+		color: #555;
+		text-decoration: none;
+	}
+	/*a:hover { text-decoration:underline; }*/
+	img {
+		border: none;
+	}
+	ol,ul,li {
+		list-style: none;
+	}
+	input,textarea,select,button {
+		font: 14px Verdana, Helvetica, Arial, sans-serif;
+	}
+	table {
+		border-collapse: collapse;
+	}
+	html {
+		overflow-y: scroll;
+	}
+	html,body{
+		height: 100%;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+	}
+	body{
+		background-image: -moz-linear-gradient( 180deg, rgb(252,237,189) 0%, rgb(255,251,231) 50%, rgb(255,240,203) 100%);
+		background-image: -webkit-linear-gradient( 180deg, rgb(252,237,189) 0%, rgb(255,251,231) 50%, rgb(255,240,203) 100%);
+		background-image: -ms-linear-gradient( 180deg, rgb(252,237,189) 0%, rgb(255,251,231) 50%, rgb(255,240,203) 100%);
+	}
+	#main{
+		height: 100%;
+		width: 100%;
+		background: url(img/Invitation_02.png);
+		background-repeat: no-repeat;
+		background-size: 100%;
+		color: white;
+	}
+	#InvitationCode{
+		position: absolute;
+		/*height: 110px;*/
+		width: 100%;
+		/*margin-left: 20%;*/
+		text-align: center;
+		/*background-color: #ffffff;*/
+		/*color: black;*/
+		border-radius: 3px;
+		top: 36vw;
+		/*margin-top: 100px;*/
+		/*padding: 24px;*/
+		box-sizing: border-box;
+	}
+	#InvitationCode .img{
+		width: 20vw;
+		height: 20vw;
+		border-radius: 50%;
+		background-color: white;
+		display: inline-block;
+	}
+	#InvitationCode .img img{
+		height: 18vw;
+		width: 18vw;
+		border-radius: 50%;
+		margin-top: 1vw;
+	}
+	#InvitationCode p{
+		font-size: 14px;
+		line-height: 20px;
+		color:rgb(228,33,44);
+	}
+	#InvitationCode b{
+		font-size: 30px;
+		line-height: 40px;
+		color:black;
+	}
+	#download{
+		position: absolute;
+		display: block;
+		width: 80%;
+		height: 40px;
+		margin-left: 10%;
+		text-align: center;
+		background-color: rgb(228,33,44);
+		color: white;
+		font-size: 16px;
+		line-height: 40px;
+		border-radius: 3px;
+		bottom: 5%;
+	}
+</style>
+<script src="../jQuery/jquery-3.1.0.js"></script>
+<body>
+	<div id="main">
+		<div id="InvitationCode">
+			<div class="img"><img src="" alt=""></div>
+			<div style="margin-top: 1.8vw;"></div>
+			<p id="UserName"><span></span></p>
+			<div style="margin-top: 2.5vw;"></div>
+			<b></b>
+		</div>
+		<a id="download" href="">下载<b>师培在线APP</b>赚金币</a>
+	</div>
+</body>
+<script>
+	var data = window.location.href.substring(window.location.href.lastIndexOf('?userId=') + 8)
+	console.log(data)
+	$(document).ready(function(){
+		$.ajax({
+			url:'http://www.spzxedu.com:8311/api/Account/GetShareInfo',
+			data:{userId:data},
+			type:'get',
+			success:function(req){
+				$('#UserName span').text(req.result.name)
+				$('#InvitationCode b').text(req.result.code)
+				$('.img img').attr("src",req.result.photo)
+			}
+		})
+	})
+</script>
+</html>
+

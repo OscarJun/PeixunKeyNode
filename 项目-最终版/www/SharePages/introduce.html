@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+		<title></title>
+		<script type="text/javascript" src="jQuery/jquery-3.1.0.js"></script>
+		<style type="text/css">
+			body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td {
+				margin: 0;
+				padding: 0;
+			}
+			body,button,input,select,textarea {
+				font: 12px/1.5tahoma, arial, \5b8b\4f53;
+				font-family: "PingFang";
+			}
+			h1,h2,h3,h4,h5,h6 {
+				font-size: 100%;
+			}
+			address,cite,dfn,em,var {
+				font-style: normal;
+			}
+			code,kbd,pre,samp {
+				font-family: couriernew, courier, monospace;
+			}
+			small {
+				font-size: 12px;
+			}
+			ul,ol {
+				list-style: none;
+			}
+			a {
+				text-decoration: none;
+			}
+			a:hover {
+				text-decoration: underline;
+			}
+			sup {
+				vertical-align: text-top;
+			}
+			sub {
+				vertical-align: text-bottom;
+			}
+			legend {
+				color: #000;
+			}
+			fieldset,img {
+				border: 0;
+			}
+			button,input,select,textarea {
+				font-size: 100%;
+			}
+			table {
+				border-collapse: collapse;
+				border-spacing: 0;
+			}
+			.main {
+				height: auto;
+				width: 100%;
+				position: relative;
+				font-family: "微软雅黑";
+			}
+			.main>div {
+				position: relative;
+				width: 100%;
+			}
+			.header {
+				height: 60px;
+				background: rgb(244, 67, 54);
+				color: white;
+				text-align: center;
+				line-height: 60px;
+			}
+			.header>img {
+				position: absolute;
+				height: 40%;
+				top: 30%;
+				left: 20px;
+			}
+			.bodyer {
+				height: 300px;
+				background: url(img/bg0.png);
+				background-size: 100% 100%;
+				margin-bottom: 60px;
+			}
+			.bodyer>div {
+				width: 88%;
+				position: relative;
+				left: 6%;
+				height: 40%;
+				top: 41%;
+			}
+			.bodyer>div>img {
+				width: 100%;
+				margin-bottom: 1%;
+				position: relative;
+			}
+			.main>.footer {
+				height: 60px;
+				background: rgb(244, 67, 54);
+				color: white;
+				text-align: center;
+				line-height: 60px;
+				position: fixed;
+				bottom: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="main">
+			<div class="header">
+				<img src="img/back.png" alt="" id="lastindex" /> 产品介绍
+			</div>
+			<div class="bodyer">
+				<div>
+					<img src="img/img1.png" alt="" />
+					<img src="img/img2.png" alt="" />
+					<img src="img/img3.png" alt="" />
+					<img src="img/img4.png" alt="" />
+				</div>
+			</div>
+			<div class="footer" onclick="ApplyTryUse()">立即申请</div>
+		</div>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('.bodyer').height($('.bodyer').width() * 2.53);
+				$("#lastindex").click(function() {
+					location.href = './QuestionnairesReport.html?jsonstr='+window.location.href.substring(window.location.href.lastIndexOf('?jsonstr=') + 9)
+				});
+			});
+			function ApplyTryUse(){
+				location.href = './ApplyTryUse.html?jsonstr='+window.location.href.substring(window.location.href.lastIndexOf('?jsonstr=') + 9)
+			}
+		</script>
+	</body>
+
+</html>

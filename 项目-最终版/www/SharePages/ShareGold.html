@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" id="viewport" content="width=device-width, initial-scale=1">
+	<title>师培金币</title>
+	<style>
+		body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			background: #fff;
+			color: #555;
+			font-size: 14px;
+			font-family: Verdana, Arial, Helvetica, sans-serif;
+			font-family: "微软雅黑";
+		}
+		td,th,caption {
+			font-size: 16px;
+		}
+		h1,h2,h3,h4,h5,h6 {
+			font-weight: normal;
+			font-size: 100%;
+		}
+		address,caption,cite,code,dfn,em,strong,th,var {
+			font-style: normal;
+			font-weight: normal;
+		}
+		a {
+			color: #555;
+			text-decoration: none;
+		}
+		/*a:hover { text-decoration:underline; }*/
+		img {
+			border: none;
+		}
+		ol,ul,li {
+			list-style: none;
+		}
+		input,textarea,select,button {
+			font: 14px Verdana, Helvetica, Arial, sans-serif;
+		}
+		table {
+			border-collapse: collapse;
+		}
+		html {
+			overflow-y: scroll;
+		}
+		html,body{
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+		}
+		.main{
+			background-color: rgb( 45, 18, 8 );
+			height: 100%;
+			width: 100%;
+			text-align: center;
+			padding-top: 25vw;
+		}
+		#content{
+			height: 110vw;
+			width: 80vw;
+			background-color: white;
+			border-radius: 15px;
+			margin-left:10%;
+		}
+		.header{
+			width: 80vw;
+			height: 80vw;
+			background-image: url('img/MyCoinResult.png');
+			background-repeat: no-repeat;
+			background-size: 100%;
+			text-align: center;
+		}
+		.img{
+			height: 26vw;
+			width: 26vw;
+			background:white;
+			border-radius: 50%;
+			margin-left:27vw;
+			position: relative;
+			top: -13vw;
+		}
+		.img img{
+			height: 24vw;
+			width: 24vw;
+			border-radius: 50%;
+			margin-top: 1vw;
+		}
+		#UserName{
+			position: relative;
+			font-size: 16px;
+			top: -10vw;
+			color: white;
+		}
+		#center{
+			color: white;
+			margin-top: 3vw
+		}
+		#center .CoinNum{
+			font-size: 24px;
+			font-weight: bold;
+		}
+		.footer{
+			padding-top: 10%;
+			box-sizing: border-box;
+		}
+		.footer .btn{
+			border:none;
+			background-color: rgb(228,33,44);
+			border-radius: 6px;
+			width: 80%;
+			height: 40px;
+			line-height: 40px;
+			font-size: 16px;
+			color: white;
+		}
+	</style>
+</head>
+<script src="../jQuery/jquery-3.1.0.js"></script>
+<body>
+	<div class="main">
+		<div id="content">
+			<div class="header">
+				<div class="img"><img src="" alt=""></div>
+				<span id="UserName"></span>
+				<div id="center">
+					<p style="font-size: 12px;">我在师培在线赚了</p>
+					<p class="CoinNum"></p>
+					<p style="font-size: 15px;">金币</p>
+				</div>
+			</div>
+			<div class="footer">
+				<button class="btn">去<b>师培在线APP</b>赚金币</button>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	var data = window.location.href.substring(window.location.href.lastIndexOf('?userId=') + 8)
+	$(document).ready(function(){
+		$.ajax({
+			url:'http://www.spzxedu.com:8311/api/Account/GetShareInfo',
+			data:{userId:data},
+			type:'get',
+			success:function(req){
+				$('#UserName').text(req.result.name)
+				$('.CoinNum').text(req.result.moneyCount)
+				$('.img img').attr("src",req.result.photo)
+			}
+		})
+	})
+</script>
+</html>

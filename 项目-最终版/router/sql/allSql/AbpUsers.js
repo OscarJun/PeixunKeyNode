@@ -1,0 +1,111 @@
+
+var Sequelize = require('sequelize');
+var sequelize = require('../sqlConnect.js')
+
+var AbpUsers = sequelize.define('AbpUsers',
+{
+    Id:{
+        type:Sequelize.BIGINT,
+        allowNull:false,
+        primaryKey:true,
+        autoIncrement:true
+    },
+    Name:{
+        type:Sequelize.STRING(32)
+    },
+    Surname:{
+        type:Sequelize.STRING(32)
+    },
+    UserExpandId:{
+        type:Sequelize.INTEGER
+    },
+    HeadImage:{
+        type:Sequelize.STRING(256)
+    },
+    PhoneNumber:{
+        type:Sequelize.STRING(15)//电话号码
+    },
+    IsPhoneNumberConfirmed:{
+        type:Sequelize.BOOLEAN
+    },
+    PhoneNumberConfirmationCode:{
+        type:Sequelize.STRING(128)
+    },
+    PhoneNumberResetCode:{
+        type:Sequelize.STRING(328)
+    },
+    AuthenticationSource:{
+        type:Sequelize.STRING(64)
+    },
+    Password:{
+        type:Sequelize.STRING(128),
+        allowNull:false
+    },
+    EmailAddress:{
+        type:Sequelize.STRING(256)
+    },
+    IsEmailConfirmed:{
+        type:Sequelize.BOOLEAN
+    },
+    EmailConfirmationCode:{
+        type:Sequelize.STRING(128)
+    },
+    PasswordResetCode:{
+        type:Sequelize.STRING(328)
+    },
+    LastLoginTime:{
+        type:Sequelize.DATE
+    },
+    AppLastLoginTime:{
+        type:Sequelize.DATE
+    },
+    ExpirationTime:{
+        type:Sequelize.DATE//过期时间
+    },
+    IsFoldUp:{
+        type:Sequelize.BOOLEAN
+    },
+    UserName:{
+        type:Sequelize.STRING(32),//学号
+        allowNull:false
+    },
+    TenantId:{
+        type:Sequelize.INTEGER
+    },
+    IsDeleted:{
+        type:Sequelize.BOOLEAN,
+        allowNull:false
+    },
+    DeleterUserId:{
+        type:Sequelize.BIGINT
+    },
+    DeletionTime:{
+        type:Sequelize.DATE
+    },
+    LastModificationTime:{
+        type:Sequelize.DATE     
+    },
+    LastModifierUserId:{
+        type:Sequelize.BIGINT
+    },
+    CreationTime:{
+        type:Sequelize.DATE,
+        allowNull:false
+    },
+    CreatorUserId:{
+        type:Sequelize.BIGINT
+    },
+    UserType:{
+        type:Sequelize.INTEGER,//是否是老师
+        allowNull:false
+    },
+    ClassName:{
+        type:Sequelize.STRING
+    }
+},{
+    timestamps:false,//不增加 TIMESTAMP 属性  (updatedAt, createdAt)
+    freezeTableName:true//Model 对应的表名将与model名相同
+})
+
+
+module.exports = AbpUsers;

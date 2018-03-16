@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+ 
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <script type="text/javascript" src="vue.js" ></script>
+    </head>
+ 
+    <body>
+        <div id="todo-list-example">
+            <button v-on:click="ss">保存 </button>
+            <ul>
+                <li  v-for="(todo, index) in todos"  v-text="sv" v-on:click="hh"></li>
+            </ul>
+        </div>
+    </body>
+    <script>
+        Vue.component('todo-item', {
+            template: `
+            <li v-on:click="$emit('click')">
+                {{ text }}
+            </li>`,
+            props: ['text']
+        })
+        new Vue({
+            el: '#todo-list-example',
+            data: {
+                todos: [
+                    '+添加'
+                ],
+                sv:'+添加'
+            },
+            methods: {
+                ss: function() {
+                    this.todos.push(this.sv)
+                },
+                hh:function(){
+                    alert(1)
+                }
+            }
+        })
+        var a = [1,2,3,4];
+        function change(arr,index){
+            var temp;
+            if(index===0||index>arr.length-1){
+                return arr;
+            }
+            temp = arr[index];
+            arr[index] = arr[index-1];
+            arr[index-1] = temp;
+            return arr; 
+        }
+        change(arr,1);
+        change(arr,3);
+    </script>
+ 
+</html>

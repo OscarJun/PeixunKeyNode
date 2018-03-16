@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="shortcut icon" href="favicon.ICO" type="image/x-icon" />
+	<title>师培在线</title>
+</head>
+<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	body{
+		background-color: #f3f3f3;
+	}
+	#header{
+		position: fixed;
+		margin: 0;
+		background-color: #f44336;
+		height: 100px;
+		width: 100%;
+		z-index: 10;
+	}
+	#header p{
+		color: #fff;
+		font-size: 36px;
+		line-height: 100px;
+		text-align: center;
+		font-weight: bold;
+	}
+	#main{
+		padding-top: 10px;
+		position: absolute;
+		margin-top: 100px;
+		width: 100%;
+		height: calc(100% - 110px);
+	}
+	#main form{
+		margin: 0px 30px 30px 30px;
+		padding-top: 30px;
+		/*margin: 100px 0;*/
+	}
+	#main>form>div{
+		margin-bottom: 30px;
+		padding: 30px;
+	}
+	#main div p{
+		line-height: 30px;
+		font-size: 30px;
+	}
+	#main div{
+		/*margin: 0 0 30px 0;*/
+		/*padding: 0 30px;*/
+		background-color: #fff;
+	}
+	#main div label{
+		line-height: 90px;
+		/*height: 90px;*/
+		/*margin-left: 30px;*/
+		padding: 0 30px;
+		box-sizing: border-box;
+	}
+	/*#main div canvas{
+		padding: 30px;
+	}*/
+	#main canvas.ShowChart{
+		width: 100% ;
+		height: 100% ;
+	}
+	input[type="radio"]{
+		display: none;
+		background-color: #fff;
+		width: 40px;
+		height: 40px;
+		margin-right: 20px;
+	}
+	label{
+		font-size: 30px;
+		color:#333;
+		display: block;
+	}
+	label.title{
+		padding-bottom: 30px;
+	}
+	#main div div.line{
+		height: 1px;
+		background-color: #ececec;
+		margin: 0;
+		padding: 0;
+	}
+</style>
+<body>
+	<div id="header">
+		<p>问卷调查详情</p>
+	</div>
+	<div id="main">
+		<div style="margin-top: 120px;background-color: #f3f3f3;">
+			<p>调查问卷内容为空</p>
+		</div>
+		<!-- <div>
+			<p>正文</p>
+		</div>
+		<div>
+			<p>正文</p>
+		</div> -->
+	</div>
+	
+</body>
+<script src="../jQuery/jquery-3.1.0.js"></script>
+<script src="../Chart/Chart-1.0.1-beta.4.js"></script>
+<script>
+var data = window.location.href.substring(window.location.href.lastIndexOf('?jsonstr=') + 9)
+// console.log(JSON.parse(window.atob(data)).Info.id)
+var Id = JSON.parse(window.atob(data)).Info.id
+// console.log(Id)
+// var httpurl = 'http://139.224.17.12:9800'
+var Data = []
+function ApplyTryUse(){
+	location.href = './introduce.html?jsonstr='+window.location.href.substring(window.location.href.lastIndexOf('?jsonstr=') + 9)
+}
+$.post('/QuestionnairesReport',{Id:JSON.parse(window.atob(data)).Info.id},function(req){
+	// Data = req.result.data
+	if (req.error == 1) {
+		// console.log('----')
+		$('#main').html('<div style="top:0;right:0;bottom:0;left:0;position:absolute;margin:auto;"><p style="top:0;right:0;bottom:0;left:0;position:absolute;margin:auto;display:block;width:100%;height:30px;text-align:center;">' + req.result.msg + '</p></div>')
+	} else {
+		// console.log(req.result.QuesTitle)
+		$('#header').html('<p>' + req.result.QuesData.Title + '</p>')
+		var str = '<form>'
+		for (var i = 0; i < req.result.result.length; i++) {
+			// console.log(req.result.data[i])
+			str += '<label class="Title">' + req.result.result[i].QuesSurData.Index + '.<span>' + req.result.result[i].QuesSurData.Title + '</span></label><br/><div>'
+			str += '<label class="' + req.result.result[i].QuesSurData.Id +'" >' + 'A.&#X3000<span>' + req.result.result[i].QuesSurData.OptionsA + '</span></label>'
+			str += '<div class="line"></div><label class="' + req.result.result[i].QuesSurData.Id +'" >' + 'B.&#X3000<span>' + req.result.result[i].QuesSurData.OptionsB + '</span></label>'
+			if (req.result.result[i].QuesSurData.OptionsC) {
+				str += '<div class="line"></div><label class="' + req.result.result[i].QuesSurData.Id +'" >' + 'C.&#X3000<span>' + req.result.result[i].QuesSurData.OptionsC + '</span></label>'
+			}
+			if (req.result.result[i].QuesSurData.OptionsD) {
+				str += '<div class="line"></div><label class="' + req.result.result[i].QuesSurData.Id +'" >' + 'D.&#X3000<span>' + req.result.result[i].QuesSurData.OptionsD + '</span></label>'
+			}
+			str += '<div class="line"></div><canvas class="ShowChart" id="' + req.result.result[i].QuesSurResultData.Id + '" height="300" ></canvas>'
+			str += '</div>'
+		}
+		// width="' + (screen.availWidth - 100) + '"px height="'+ (screen.availHeight / 2) + '"px
+		str += '</form><div style="margin: 30px 30px;" class="footer" onclick="ApplyTryUse()"><img style="width:100%" src="img/Adfooter.png" alt=""></div>'
+		$('#main').html(str)
+	}
+	for (var i = 0; i < req.result.result.length; i++) {
+		var ctx = $("#" + req.result.result[i].QuesSurResultData.Id).get(0).getContext("2d");
+		// This will get the first returned node in the jQuery collection.
+		var myNewChart = new Chart(ctx);
+		var data = {
+			labels:['A','B'],
+			datasets:[{
+				fillColor:'rgba(173,223,117,1)',
+				data:[]
+			}]
+		}
+		data.datasets[0].data.push(req.result.result[i].QuesSurResultData.CountA)
+		data.datasets[0].data.push(req.result.result[i].QuesSurResultData.CountB)
+		if (req.result.result[i].QuesSurData.OptionsC) {
+			data.labels.push('C')
+			data.datasets[0].data.push(req.result.result[i].QuesSurResultData.CountC)
+		}
+		if (req.result.result[i].QuesSurData.OptionsD) {
+			data.labels.push('D')
+			data.datasets[0].data.push(req.result.result[i].QuesSurResultData.CountD)
+		}
+		// console.log(data)
+		// console.log(Math.max.apply(null,data.datasets[0].data))
+		var n = 10;
+		new Chart(ctx).Bar(data
+			,{
+				// scaleOverride : true,
+				// scaleOverlay:true,
+				// scaleSteps:req.result.QuesData.Count / n,
+				// scaleStartValue:req.result.QuesData.Count / n - 1,
+				// scaleStepWidth :req.result.QuesData.Count / n - 1,
+				// scaleLineWidth : 1,
+				// ,scaleLineColor:'#333'
+				// scaleShowLabels:true,
+				// scaleLabel : "<%=1%>",
+				scaleFontSize:30
+				// barValueSpacing : 7,
+				// barDatasetSpacing : 10
+			}
+		)
+	}//88
+
+			// Bar.defaults = {
+				
+			// 	//Boolean - If we show the scale above the chart data			
+			// 	scaleOverlay : false,
+				
+			// 	//Boolean - If we want to override with a hard coded scale
+			// 	scaleOverride : false,
+				
+			// 	//** Required if scaleOverride is true **
+			// 	//Number - The number of steps in a hard coded scale
+			// 	scaleSteps : null,
+			// 	//Number - The value jump in the hard coded scale
+			// 	scaleStepWidth : null,
+			// 	//Number - The scale starting value
+			// 	scaleStartValue : null,
+
+			// 	//String - Colour of the scale line	
+			// 	scaleLineColor : "rgba(0,0,0,.1)",
+				
+			// 	//Number - Pixel width of the scale line	
+			// 	scaleLineWidth : 1,
+
+			// 	//Boolean - Whether to show labels on the scale	
+			// 	scaleShowLabels : false,
+				
+			// 	//Interpolated JS string - can access value
+			// 	scaleLabel : "<%=value%>",
+				
+			// 	//String - Scale label font declaration for the scale label
+			// 	scaleFontFamily : "'Arial'",
+				
+			// 	//Number - Scale label font size in pixels	
+			// 	scaleFontSize : 12,
+				
+			// 	//String - Scale label font weight style	
+			// 	scaleFontStyle : "normal",
+				
+			// 	//String - Scale label font colour	
+			// 	scaleFontColor : "#666",	
+				
+			// 	///Boolean - Whether grid lines are shown across the chart
+			// 	scaleShowGridLines : true,
+				
+			// 	//String - Colour of the grid lines
+			// 	scaleGridLineColor : "rgba(0,0,0,.05)",
+				
+			// 	//Number - Width of the grid lines
+			// 	scaleGridLineWidth : 1,	
+
+			// 	//Boolean - If there is a stroke on each bar	
+			// 	barShowStroke : true,
+				
+			// 	//Number - Pixel width of the bar stroke	
+			// 	barStrokeWidth : 2,
+				
+			// 	//Number - Spacing between each of the X value sets
+			// 	barValueSpacing : 5,
+				
+			// 	//Number - Spacing between data sets within X values
+			// 	barDatasetSpacing : 1,
+				
+			// 	//Boolean - Whether to animate the chart
+			// 	animation : true,
+
+			// 	//Number - Number of animation steps
+			// 	animationSteps : 60,
+				
+			// 	//String - Animation easing effect
+			// 	animationEasing : "easeOutQuart",
+
+			// 	//Function - Fires when the animation is complete
+			// 	onAnimationComplete : null
+				
+			// }
+})
+</script>
+
+
+
+</html>
+
+
